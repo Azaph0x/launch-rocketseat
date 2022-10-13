@@ -1,3 +1,5 @@
+//https://github.com/rocketseat-education/bootcamp-launchbase-desafios-01/blob/master/desafios/01-1-primeiros-passos-com-js.md
+
 const nome = "Carlos";
 const peso = 84;
 const altura = 1.88;
