@@ -42,18 +42,18 @@ const classB = [
 function calculateAverage(students) {
   let sum = 0;
 
-  for(student of turma) {
+  for(student of students) {
     sum += student.grade;
   }
 
-  return sum / turma.length;
+  return sum / students.length;
 }
 
 function sendMessage(average, students) {
   if (average > 5) {
-    console.log(`${turma} average: ${average},  Congurations`)
+    console.log(`${students} average: ${average},  Congurations`)
   } else {
-    console.log(`${turma} average: ${average}. Is not good.`)
+    console.log(`${students} average: ${average}. Is not good.`)
   }
 }
 
