@@ -3,11 +3,27 @@ const { age, date } = require('../../lib/utils')
 
 module.exports = {
     index(req, res) {
+        let { filter, page, limit } = req.query
 
-        Member.all((members) => {
-            return res.render('members/index', { members })
-        })
+        page = page || 1
+        limit = limit || 2
+        let offset = limit * (page - 1)
 
+        const params = { 
+            filter, 
+            page, 
+            limit, 
+            offset, 
+            callback(members) {
+                const pagination = {
+                    total: Math.ceil(members[0].total / limit),
+                    page
+                }
+                return res.render('members/index', { members, filter, pagination })
+            }
+        }  
+
+        Member.paginate(params)
     },
     create(req, res) {
         Member.instructorsSelectOption((options) => {
