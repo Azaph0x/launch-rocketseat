@@ -9,7 +9,7 @@ CREATE TABLE "products" (
   "quantity" int DEFAULT 0,
   "status" int DEFAULT 1,
   "created_at" timestamp DEFAULT 'now()',
-  "update_at" timestamp DEFAULT 'now()'
+  "updated_at" timestamp DEFAULT 'now()'
 );
 
 CREATE TABLE "categories" (
