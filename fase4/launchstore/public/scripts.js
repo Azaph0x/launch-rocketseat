@@ -118,3 +118,35 @@ const PhotosUpload = {
         photoDiv.remove()
     }
 }
+
+const imageGallery = {
+    highlight: document.querySelector('.gallery .highlight > img'),
+    previews: document.querySelectorAll('.gallery-preview img'),
+    setImage(event) {
+        const { target } = event
+
+        imageGallery.previews.forEach(preview => preview.classList.remove('active'))
+        target.classList.add('active')
+
+        imageGallery.highlight.src = target.src
+        lightBox.image.src = target.src
+    }
+}
+
+const lightBox = {
+    target: document.querySelector('.lightbox-target'),
+    image: document.querySelector('.lightbox-target img'),
+    button: document.querySelector('.lightbox-target a.lightbox-close'),
+    open() {
+        lightBox.target.style.opacity = 1
+        lightBox.target.style.top = 0
+        lightBox.target.style.bottom = 0
+        lightBox.button.style.top = 0
+    },
+    close() {
+        lightBox.target.style.opacity = 0
+        lightBox.target.style.top = '-100%'
+        lightBox.target.style.bottom = "initial"
+        lightBox.button.style.top = '-80px'
+    }
+}
