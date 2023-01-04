@@ -59,6 +59,8 @@ module.exports = {
             src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`, // o metodo de headers.host ele vem sem a / + com no banco tem o barra / dps do public e estamos dando replace isso se resolve
         }))
 
+        console.log(results.rows[0].path)
+
 
         return res.render('products/show', { product, files })
     },
