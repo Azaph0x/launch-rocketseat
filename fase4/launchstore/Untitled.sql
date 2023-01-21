@@ -81,3 +81,14 @@ ALTER TABLE "files" DROP CONSTRAINT files_product_id_fkey,
 ADD CONSTRAINT files_product_id_fkey FOREIGN KEY ("product_id")
 REFERENCES "products" ("id")
 ON DELETE CASCADE;
+
+
+-- TO RUN SEED
+DELETE FROM products;
+DELETE FROM users;
+DELETE FROM files;
+
+-- RESTART SEQUENCE AUTO_INCREMENT FROM TABLES IDS
+ALTER SEQUENCE products_id_seq RESTART WITH 1;
+ALTER SEQUENCE users_id_seq RESTART WITH 1;
+ALTER SEQUENCE files_id_seq RESTART WITH 1;
