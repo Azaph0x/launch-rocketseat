@@ -2,12 +2,11 @@
 
 {% block content %}
 
-<section class="user-dashboard container form">
+{% import "parts/card.njk"  as card %}
+
+{% call card.render('Detalhes', 'user-dashboard container form') %}
+
     <form method="POST" action="/users?_method=PUT">
-        <div class="header">
-            <h3>Detalhes</h3>
-        </div>
-        
         <div class="fields">
             {% include 'user/fields.njk' %}
             <input type="hidden" name="id" value={{user.id}}>
@@ -20,7 +19,7 @@
         <input type="hidden" name="id" value={{user.id}}>
         <button type="submit" class="button delete">Deletar</button>
     </form>
-</section>
+{% endcall %}
 
 <script>
     const formDelete = document.querySelector('#form-delete')

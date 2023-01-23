@@ -2,11 +2,11 @@
 
 {% block content %}
 
-<section class="container form">
+{% import "parts/card.njk"  as card %}
+
+{% call card.render('Editar Produto', 'container form') %}
+
     <form method="POST" action="/products?_method=PUT" enctype="multipart/form-data">
-        <div class="header">
-            <h3>Editar Produto {{productID}}</h3>
-        </div>
         
         <div class="fields">
             {% include 'products/fields.njk' %}
@@ -20,7 +20,8 @@
         <input type="hidden" name="id" value={{product.id}}>
         <button type="submit" class="button delete">Deletar</button>
     </form>
-</section>
+
+{% endcall %}
 
 <script>
     const formDelete = document.querySelector('#form-delete')
