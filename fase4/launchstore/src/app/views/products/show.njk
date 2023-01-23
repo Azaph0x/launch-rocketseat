@@ -6,18 +6,18 @@
 
     <div class="gallery">
             <div class="highlight">
-            {% if not files[0] %}
+            {% if not product.files[0] %}
                 <img src="https://via.placeholder.com\500?text=PRODUTO"/>
             {% else %}
                 <img 
-                src="{{files[0].src}}" 
-                alt="{{files[0].name}}" 
+                src="{{product.files[0].src}}" 
+                alt="{{product.files[0].name}}" 
                 onclick="lightBox.open()"
                 >
             {% endif %}
 
             <div class="lightbox-target">
-                <img src="{{files[0].src}}" alt="{{files[0].name}}">
+                <img src="{{product.files[0].src}}" alt="{{product.files[0].name}}">
                 <a href="#" class="lightbox-close"
                 onclick="lightBox.close()">
                     <i class="material-icons">close</i>
@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="gallery-preview">
-            {% for image in files %}
+            {% for image in product.files %}
                 <img 
                 src="{{image.src}}" 
                 alt="{{image.name}}"
@@ -49,9 +49,9 @@
 
         <div class="price-buy">
             <div class="price">
-                {{product.price}}
-                {% if product.price !== product.old_price %}
-                <span class="old-price">{{product.old_price}}</span>
+                {{product.formattedPrice}}
+                {% if product.formattedPrice !== product.formattedOldPrice %}
+                <span class="old-price">{{product.formattedOldPrice}}</span>
                 {% endif %}
             </div>
             <div class="buy">

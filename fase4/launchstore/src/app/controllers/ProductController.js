@@ -3,6 +3,8 @@ const Product = require('../models/Product')
 const File = require('../models/File')
 const { unlinkSync } = require('fs')
 
+const loadProductService = require('../services/loadProductService')
+
 const {formatPrice, date} = require('../../lib/utils')
 
 module.exports = {
@@ -16,14 +18,6 @@ module.exports = {
     },
     async post(req, res) {
         try {
-            const keys = Object.keys(req.body);
-
-            for(key of keys) {
-                if(req.body[key] == "") return res.send('Please, fill all fields')
-            }
-    
-            if(req.files.lenght == 0) return res.send('Please, send at least one photo')
-    
             let { category_id, name, description, 
                 old_price, price, quantity, status } = req.body
             req.body.user_id = req.session.userId
@@ -57,51 +51,27 @@ module.exports = {
         }
     },
     async show(req, res) {
-        const { id } = req.params
-        const product = await Product.find(id)
+        try {
+            const { id } = req.params
+            const product = await loadProductService.load('product', { where: { id } })
 
-        if(!product) return res.send('Product not found')
-
-        const { day, hour, minutes, month } = date(product.updated_at)
-
-        product.published = {
-            day: `${day}/${month}`, 
-            hour: `${hour}h${minutes}`, 
+            return res.render('products/show', { product })
+        } catch (err) {
+            console.error(err)
         }
-
-        product.old_price = formatPrice(product.old_price)
-        product.price = formatPrice(product.price)
-
-        let files = await Product.files(product.id)
-        files = files.map(file => ({
-            ...file,
-            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`, // o metodo de headers.host ele vem sem a / + com no banco tem o barra / dps do public e estamos dando replace isso se resolve
-        }))
-
-        return res.render('products/show', { product, files })
     },
     async edit(req, res) {
         try{
-            const product = await Product.find(req.params.id)
+            const { id } = req.params
+            const product = await loadProductService.load('product', { where: { id } })
 
             if(!product) return res.send("Product not found")
 
-            product.price = formatPrice(product.price)
-            product.old_price = formatPrice(product.old_price)
-
             //get Categories
-            results = await Category.all()
-            const categories = results.rows
+            results = await Category.findAll()
+            const categories = results
 
-            //get images
-            let files = await Product.files(product.id)
-
-            files = files.map(file => ({
-                ...file,
-                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`, // o metodo de headers.host ele vem sem a / + com no banco tem o barra / dps do public e estamos dando replace isso se resolve
-            }))
-
-            return res.render('products/edit', { product, categories, files })
+            return res.render('products/edit', { product, categories })
         } catch (err) {
             console.error(err)
         }
@@ -166,7 +136,6 @@ module.exports = {
                 console.log(error)
             }
         })
-z
         return res.redirect('/products/create')
     }
 }
