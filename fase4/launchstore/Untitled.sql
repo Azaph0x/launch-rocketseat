@@ -114,3 +114,16 @@ ALTER TABLE "orders" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id")
 
 -- TRIGGER
 CREATE TRIGGER set_timestamp BEFORE UPDATE on orders FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();
+
+
+-- SOFT DELETE
+-- 1.Criar uma columns na table products chamada deleted_at
+ALTER TABLE products ADD COLUMN "deleted_at" timestamp;
+-- 2. Criar uma regra que vai rodar todas as vezes que solicitarmos o DELTE
+CREATE OR REPLACE RULE delete_product AS ON DELETE TO products
+DO INSTEAD
+UPDATE products
+SET deleted_at = now()
+WHERE products.id = old.id;
+-- 3. Criar uma VIEW onde vamos puixar somente os dados que estao ativos
+CREATE VIEW products_without_deleted AS SELECT * FROM products WHERE deleted_At IS NULL
